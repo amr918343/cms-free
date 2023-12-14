@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Translatable\HasTranslations;
 
 class BlogContent extends Model
 {
@@ -17,6 +18,12 @@ class BlogContent extends Model
         'img',
         'alt_img',
         'order'
+    ];
+
+    public $translatable = [
+        'title',
+        'desc',
+        'alt_img'
     ];
 
     public function blog() : BelongsTo

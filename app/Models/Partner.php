@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class Partner extends Model
 {
@@ -12,6 +13,10 @@ class Partner extends Model
         'link',
         'alt_img',
         'img'
+    ];
+
+    public $translatable = [
+        'alt_img'
     ];
 
     public function getImgUrlAttribute() : string

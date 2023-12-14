@@ -19,6 +19,11 @@ class SliderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('Sliders');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

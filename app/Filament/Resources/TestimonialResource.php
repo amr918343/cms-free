@@ -19,6 +19,11 @@ class TestimonialResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('Testimonials');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

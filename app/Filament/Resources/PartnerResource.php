@@ -19,6 +19,11 @@ class PartnerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('Partners');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

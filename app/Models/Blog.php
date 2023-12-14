@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\{
     Model
 };
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Spatie\Translatable\HasTranslations;
 class Blog extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
 
     protected $fillable = [
         'slug',
@@ -27,6 +27,13 @@ class Blog extends Model
     protected $casts = [
         'published_at' => 'datetime',
         'last_viewed_at' => 'datetime'
+    ];
+
+    public $translatable = [
+        'slug',
+        'title',
+        'desc',
+        'alt_img'
     ];
 
     public function contents() : HasMany

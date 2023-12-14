@@ -19,6 +19,11 @@ class HomeAdvantageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('Home advantages');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

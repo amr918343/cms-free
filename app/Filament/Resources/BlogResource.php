@@ -18,6 +18,17 @@ class BlogResource extends Resource
     protected static ?string $model = Blog::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+    // protected static ?string $navigationLabel = 'Blog';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('News');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('News');
+    }
 
     public static function form(Form $form): Form
     {

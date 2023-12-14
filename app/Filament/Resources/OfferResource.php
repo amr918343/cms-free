@@ -19,6 +19,11 @@ class OfferResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('Offers');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

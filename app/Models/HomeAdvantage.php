@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class HomeAdvantage extends Model
 {
@@ -12,6 +13,12 @@ class HomeAdvantage extends Model
         'title',
         'desc',
         'img',
+        'alt_img'
+    ];
+
+    public $translatable = [
+        'title',
+        'desc',
         'alt_img'
     ];
 
