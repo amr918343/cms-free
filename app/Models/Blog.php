@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\{
     Factories\HasFactory,
-    Model
+    Model,
+    SoftDeletes
 };
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 class Blog extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, SoftDeletes;
 
     protected $fillable = [
         'slug',
@@ -21,7 +23,8 @@ class Blog extends Model
         'last_viewed_at',
         'type',
         'img',
-        'alt_img'
+        'alt_img',
+        'category_id',
     ];
 
     protected $casts = [
@@ -36,11 +39,18 @@ class Blog extends Model
         'alt_img'
     ];
 
+    // Relations
     public function contents() : HasMany
     {
         return $this->hasMany(BlogContent::class);
     }
 
+    public function category() : BelongsTo
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id');
+    }
+
+    // Attributes
     public function getImgUrlAttribute() : string
     {
         return $this->img ? asset('storage/' . $this->img) : '';

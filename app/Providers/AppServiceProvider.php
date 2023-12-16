@@ -22,8 +22,13 @@ class AppServiceProvider extends ServiceProvider
     {
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
-                ->locales(['ar','en','fr']) // also accepts a closure
-                ->displayLocale('ar');
+                ->locales(['ar','en']) // also accepts a closure
+                ->displayLocale('ar')
+                ->flags([
+                    'ar' => asset('images/ar.png'),
+                    'en' => asset('images/en.png')
+                ])
+                ->circular();
         });
     }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
-            $table->longText('title');
-            $table->longText('desc');
+            $table->json('title');
+            $table->json('desc');
             $table->text('img')->nullable();
             $table->text('alt_img')->nullable();
             $table->timestamps();

@@ -15,14 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique();
             $table->unsignedBigInteger('views')->default(0);
-            $table->longText('title');
-            $table->longText('desc');
+            $table->boolean('is_active')->default(0);
+            $table->json('title');
+            $table->json('desc');
             $table->unsignedBigInteger('order')->default(0);
             $table->timestamp('published_at')->nullable();
             $table->timestamp('last_viewed_at')->nullable();
-            $table->timestamp('type')->nullable();
+            $table->foreignId('category_id')->constrained('blog_categories')->onDelete('cascade');
             $table->text('img')->nullable();
-            $table->text('alt_img')->nullable();
+            $table->json('alt_img')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

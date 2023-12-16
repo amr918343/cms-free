@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->longText('title');
-            $table->longText('desc')->nullable();
+            $table->json('title');
+            $table->json('desc')->nullable();
             $table->text('img')->nullable();
             $table->text('alt_img')->nullable();
             $table->timestamps();
