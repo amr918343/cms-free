@@ -8,12 +8,15 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListBlogCategories extends ListRecords
 {
+    use ListRecords\Concerns\Translatable;
+
     protected static string $resource = BlogCategoryResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
+            Actions\LocaleSwitcher::make(),
         ];
     }
 }

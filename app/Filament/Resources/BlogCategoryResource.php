@@ -7,6 +7,7 @@ use App\Filament\Resources\BlogCategoryResource\RelationManagers;
 use App\Models\BlogCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,15 +16,36 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BlogCategoryResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = BlogCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getNavigationLabel(): string
+    {
+        return trans_choice('Categories', 1);
+    }
+    public static function getModelLabel(): string
+    {
+        return trans_choice('Categories', 3);
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('Categories', 1);
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Blog manager');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
+                    ->label(__('Title'))
                     ->required(),
             ]);
     }
@@ -32,20 +54,21 @@ class BlogCategoryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('title')
+                ->label(__('Title')),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created at'))
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                ->label(__('Updated at'))
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -69,7 +92,6 @@ class BlogCategoryResource extends Resource
         return [
             'index' => Pages\ListBlogCategories::route('/'),
             'create' => Pages\CreateBlogCategory::route('/create'),
-            'view' => Pages\ViewBlogCategory::route('/{record}'),
             'edit' => Pages\EditBlogCategory::route('/{record}/edit'),
         ];
     }

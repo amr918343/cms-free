@@ -1,4 +1,5 @@
 {
+    "Categories":"{1}Categories|{2}Category|{3}Category",
     "News":"",
     "Home advantages":"",
     "Offers":"",
@@ -15,7 +16,12 @@
     "Order":"",
     "Published at":"",
     "Type":"",
+    "Views":"",
+    "Category":"",
     "Yes":"",
     "No":"",
-    "Publish":""
+    "Publish":"",
+    "Updated at":"",
+    "Created at":"",
+    "Blog manager":""
 }

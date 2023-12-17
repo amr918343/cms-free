@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BlogResource\Pages;
 use App\Filament\Resources\BlogResource\RelationManagers;
-use App\Models\Blog;
+use App\Models\{Blog, BlogCategory};
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\Concerns\Translatable;
+use Filament\Tables\Columns\SelectColumn;
+
 class BlogResource extends Resource
 {
     use Translatable;
 
-    protected static ?string $recordTitleAttribute = 'title';
+    // protected static ?string $recordTitleAttribute = 'title';
 
     protected static ?string $model = Blog::class;
 
@@ -30,12 +32,17 @@ class BlogResource extends Resource
     }
     public static function getModelLabel(): string
     {
-        return trans_choice('News', 3);
+        return trans_choice('News', 2);
     }
 
     public static function getPluralModelLabel(): string
     {
         return trans_choice('News', 1);
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Blog manager');
     }
 
     public static function form(Form $form): Form
@@ -44,9 +51,10 @@ class BlogResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('img')
                     ->label(__('Image'))
+                    ->preserveFilenames()
                     ->required()
                     ->directory('images/blog')
-                    ->image()
+                    // ->image()
                     ->imageEditor()
                     ->imageEditorMode(2)
                     ->imageEditorAspectRatios([
@@ -77,14 +85,18 @@ class BlogResource extends Resource
                     ->label(__('Order'))
                     ->required()
                     ->numeric()
-                    ->maxLength(Blog::count())
+                    ->maxLength(Blog::count() + 2)
                     ->default(0),
                 Forms\Components\DateTimePicker::make('published_at')
                 ->label(__('Published at'))
+                ->required()
                 ->beforeOrEqual(now()),
                 Forms\Components\Select::make('category_id')
-                ->label(__('Category')),
+                ->label(__('Category'))
+                ->required()
+                ->relationship(name: 'category', titleAttribute: 'title->' . app()->getLocale()),
                 Forms\Components\Radio::make('is_active')
+                ->required()
                 ->label(__('Publish'))
                 ->boolean()
                 ->inline()
@@ -101,30 +113,42 @@ class BlogResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label(__('Title'))
+                    ->searchable()
+                    ->sortable()
+                    ->words(10)
+                    ->wrap(),
+                SelectColumn::make('category_id')
+                    ->label(__('Category'))
+                    ->options(BlogCategory::pluck('title', 'id'))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('views')
+                    ->label(__('Views'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order')
+                    ->label(__('Order'))
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('published_at')
+                    ->label(__('Published at'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('last_viewed_at')
+                    ->label(__('Last viewed at'))
                     ->dateTime()
-                    ->sortable(),
-                Tables\Columns\Select::make('category_id')
-                    ->searchable()
-                    ->relationship(name: 'category', titleAttribute: 'title')
-                    ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

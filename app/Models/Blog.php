@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\{
     Model,
     SoftDeletes
 };
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 class Blog extends Model
 {
-    use HasFactory, HasTranslations, SoftDeletes;
+    use HasFactory, HasTranslations, SoftDeletes, HasSlug;
 
     protected $fillable = [
         'slug',
@@ -84,5 +86,18 @@ class Blog extends Model
     public function getLastViewedAtFormattedForInputAttribute() : string
     {
         return $this->last_viewed_at ? $this->last_viewed_at->format('Y-m-d') : '';
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
+    }
+
+    protected function asJson($value)
+    {
+        return json_encode($value, JSON_UNESCAPED_UNICODE);
     }
 }
